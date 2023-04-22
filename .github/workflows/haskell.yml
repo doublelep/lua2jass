@@ -35,7 +35,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        cabal update
-        cabal build --only-dependencies --allow-newer
+        cabal update -v
+        cabal build --only-dependencies --allow-newer -v
     - name: Build
-      run: cabal build --allow-newer all
+      run: cabal build --allow-newer -v all
