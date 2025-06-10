@@ -15,9 +15,11 @@ executable lua2jass
     build-depends: base, mtl, containers, binary, hashable,
                     parser-combinators, megaparsec, bytestring, file-embed,
                     filepath, text, optparse-applicative,
-                    alex-tools, template-haskell, language-lua==0.11.0.1
+                    alex-tools, template-haskell, language-lua
+                -- ==0.11.0.1
 
     other-modules: Compiler.Bytecode, Compiler.Lua, Compiler.Natives,
                     Compiler.Preprocess, Data.Composeable, Data.MonoidMap,
                     Jass.Ast, Jass.Parser, Jass.Printer
+    hs-source-dirs: src
 
