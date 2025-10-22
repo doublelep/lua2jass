@@ -1,22 +1,11 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     systems.url = "github:nix-systems/default";
-    # flake-utils.url = "github:numtide/flake-utils";
 
     pjass.url = "github:lep/pjass";
     pjass.inputs.nixpkgs.follows = "nixpkgs";
     pjass.inputs.systems.follows = "systems";
-    # pjass.inputs.flake-utils.follows = "flake-utils";
-
-    # common-j.url = "github:lep/common-j";
-    # common-j.inputs.nixpkgs.follows = "nixpkgs";
-    # common-j.inputs.flake-utils.follows = "flake-utils";
-
-    # wc3.url = "git+file:/Users/lep/dev/wc3-mapping";
-    # wc3.inputs.nixpkgs.follows = "nixpkgs";
-    # wc3.inputs.flake-utils.follows = "flake-utils";
-    # wc3.inputs.common-j.follows = "common-j";
   };
 
   outputs = { nixpkgs, systems, pjass, ... }:
