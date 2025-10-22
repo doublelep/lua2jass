@@ -40,3 +40,8 @@ jobs:
         
     - name: Build
       run: cabal build --allow-newer
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: lua2jass
+        path: dist-newstyle/**/lua2jass.exe
