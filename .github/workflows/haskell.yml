@@ -12,14 +12,14 @@ permissions:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: actions/setup-haskell@v1
       with:
-        ghc-version: '8.10.3'
-        cabal-version: '3.2'
+        ghc-version: 'latest'
+        cabal-version: 'latest'
 
     - name: Cache
       uses: actions/cache@v3
@@ -35,7 +35,8 @@ jobs:
 
     - name: Install dependencies
       run: |
-        cabal update -v
-        cabal build --only-dependencies --allow-newer -v
+        cabal update
+        cabal build --only-dependencies --enable-tests --enable-benchmarks
+        
     - name: Build
-      run: cabal build --allow-newer -v all
+      run: cabal build --allow-newer jhcr
