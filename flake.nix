@@ -1,86 +1,36 @@
 {
-    inputs = {
-	nixpkgs.url = "github:NixOS/nixpkgs";
-	flake-utils.url = "github:numtide/flake-utils";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    systems.url = "github:nix-systems/default";
 
-        pjass.url = "github:lep/pjass";
-        pjass.inputs.nixpkgs.follows = "nixpkgs";
-        pjass.inputs.flake-utils.follows = "flake-utils";
+    pjass.url = "github:lep/pjass";
+    pjass.inputs.nixpkgs.follows = "nixpkgs";
+    pjass.inputs.systems.follows = "systems";
+  };
 
-        common-j.url = "github:lep/common-j";
-        common-j.inputs.nixpkgs.follows = "nixpkgs";
-        common-j.inputs.flake-utils.follows = "flake-utils";
-
-	wc3.url = "git+file:/Users/lep/dev/wc3-mapping";
-        wc3.inputs.nixpkgs.follows = "nixpkgs";
-        wc3.inputs.flake-utils.follows = "flake-utils";
-	wc3.inputs.common-j.follows = "common-j";
+  outputs = { nixpkgs, systems, pjass, ... }:
+    let
+      eachSystem = nixpkgs.lib.genAttrs (import systems);
+      lua2jass = pkgs: pkgs.haskellPackages.callPackage ./lua2jass.nix { };
+    in {
+      packages = eachSystem (system:
+        let pkgs = import nixpkgs { inherit system; };
+        in { default = lua2jass pkgs; });
+      devShells = eachSystem (system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+          pjass-drv = pjass.packages.${system}.pjass;
+          # wc3-drv = wc3.packages.${system};
+        in {
+          default = pkgs.mkShell {
+            buildInputs = [
+              pkgs.cabal-install
+              pjass-drv
+              # wc3-drv.jhcr-start
+              # wc3-drv.jhcr-update
+              # wc3-drv.wc3
+            ];
+          };
+        });
     };
-
-    outputs = { self, nixpkgs, flake-utils, pjass, common-j, wc3 }:
-	flake-utils.lib.eachDefaultSystem (system:
-            let pkgs = import nixpkgs { inherit system; };
-		packageName = "lua2jass";
-
-                pjass-drv = pjass.defaultPackage.${system};
-		#wc3-shell = wc3.devShell.${system};
-		wc3-drv = wc3.packages.${system};
-
-                ghcPackages = pkgs.haskellPackages.ghcWithPackages (ps: [
-                    ps.language-lua
-		    ps.aeson
-		    ps.optparse-applicative
-		    ps.megaparsec
-		    ps.parser-combinators
-                    ps.file-embed
-                ]);
-
-		pythonPackages = pkgs.python3.withPackages( ps: [
-		    ps.tappy
-		]);
-
-		lua2jass = pkgs.stdenv.mkDerivation {
-		    name = "lua2jass";
-		    src = self;
-		    buildPhase = ''
-			${ghcPackages}/bin/ghc -O Main.hs -o lua2jass
-		    '';
-
-		    installPhase = ''
-			mkdir -p $out/bin/
-			install -t $out/bin lua2jass
-		    '';
-		};
-
-            in rec {
-		packages = {
-		    ${packageName} = lua2jass;
-		};
-
-		defaultPackage = packages.${packageName};
-
-		devShell = pkgs.mkShell {
-		    env = {
-		        commonj = "${common-j}/common.j";
-		    };
-		    shellHook = ''
-		        function lli {
-		            runhaskell compile.hs $1 | python interpreter.py /dev/stdin
-		        }
-		    '';
-		    buildInputs = [
-			pythonPackages
-                        ghcPackages
-			pkgs.cabal-install
-			pkgs.lua5_3_compat
-			pkgs.jq
-			pkgs.shellcheck
-                        pjass-drv
-			wc3-drv.jhcr-start
-			wc3-drv.jhcr-update
-			wc3-drv.wc3
-		    ];
-		};
-            }
-        );
 }

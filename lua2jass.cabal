@@ -20,4 +20,5 @@ executable lua2jass
     other-modules: Compiler.Bytecode, Compiler.Lua, Compiler.Natives,
                     Compiler.Preprocess, Data.Composeable, Data.MonoidMap,
                     Jass.Ast, Jass.Parser, Jass.Printer
+    hs-source-dirs: src
 

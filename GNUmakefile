@@ -19,7 +19,7 @@ check: war3map.j
 clean:
 	rm -f war3map.j lua2jass.j
 
-lua2jass.j: test.lua $(RUNTIME)
+lua2jass.j: test.lua $(RUNTIME) Main.hs
 	runhaskell Main.hs -- $$commonj $< $@
 
 war3map.j: lua2jass.j scaffold.j main.j

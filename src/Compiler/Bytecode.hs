@@ -24,19 +24,19 @@ data Bytecode =
       Call Register Register
     | Enter
     | Leave
-    | GetLit Register Text
-    | LitString Register Text
-    | LitInt Register Text
-    | LitFloat Register Text
-    | LitBool Register Bool
+    | GetLit Register Text          --
+    | LitString Register Text       --
+    | LitInt Register Text          --
+    | LitFloat Register Text        --
+    | LitBool Register Bool         --
     | LitNil Register
     | Set Register Register
     | SetLit Name Register
     | Table Register
-    | Append Int Register Register
-    | GetList Int Register Register
-    | SetTable Register Register Register
-    | GetTable Register Register Register
+    | Append Int Register Register          -- iii
+    | GetList Int Register Register         -- iii
+    | SetTable Register Register Register   -- iii
+    | GetTable Register Register Register   -- iii
     | Ret
     | Label Label
     | Jump Label
