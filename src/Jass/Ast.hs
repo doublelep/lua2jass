@@ -2,8 +2,7 @@
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE InstanceSigs #-}
-
-
+{-# LANGUAGE EmptyDataDecls #-}
 
 module Jass.Ast
     ( Ast (..)
