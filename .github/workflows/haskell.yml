@@ -36,7 +36,7 @@ jobs:
     - name: Install dependencies
       run: |
         cabal update
-        cabal build --only-dependencies --enable-tests --enable-benchmarks
+        cabal build --allow-newer --only-dependencies --enable-tests --enable-benchmarks
         
     - name: Build
-      run: cabal build --allow-newer jhcr
+      run: cabal build --allow-newer
