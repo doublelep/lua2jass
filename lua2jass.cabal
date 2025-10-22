@@ -1,4 +1,4 @@
-cabal-version:      3.4
+cabal-version:      3.2
 name:               lua2jass
 version:            0.1.0.0
 license:            AGPL-3.0-only
@@ -16,7 +16,6 @@ executable lua2jass
                     parser-combinators, megaparsec, bytestring, file-embed,
                     filepath, text, optparse-applicative,
                     alex-tools, template-haskell, language-lua
-                -- ==0.11.0.1
 
     other-modules: Compiler.Bytecode, Compiler.Lua, Compiler.Natives,
                     Compiler.Preprocess, Data.Composeable, Data.MonoidMap,
