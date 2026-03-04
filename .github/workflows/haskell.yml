@@ -11,7 +11,6 @@ permissions:
 
 jobs:
   build:
-
     runs-on: windows-latest
 
     steps:
@@ -41,7 +40,15 @@ jobs:
     - name: Build
       run: cabal build --allow-newer
 
-    - uses: actions/upload-artifact@v4
+    - name: GH Release
+      uses: softprops/action-gh-release@v2.5.0
       with:
-        name: lua2jass
-        path: dist-newstyle/**/lua2jass.exe
+        files: |
+          dist-newstyle/**/lua2jass.exe
+        tag_name: build-${{ github.sha }}
+        name: build-${{ github.sha }}
+        draft: false
+        prerelease: false
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
